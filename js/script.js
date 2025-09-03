@@ -46,13 +46,11 @@ let stopMin = 0,
     toxtat = false
 
 
-function daqiqaYangilash() {
+
+function startStopwatch() {
     stopwatch__hours.textContent   = stopHour   < 10 ? `0${stopHour}`   : stopHour;
     stopwatch__minutes.textContent = stopMin    < 10 ? `0${stopMin}`    : stopMin;
     stopwatch__seconds.textContent = stopSec    < 10 ? `0${stopSec}`    : stopSec;
-}
-
-function startStopwatch() {
     interval = setInterval(() => {
         console.log(stopwatch__seconds);
         if (toxtat) return;
@@ -66,7 +64,7 @@ function startStopwatch() {
         }else if (stopHour > 23) {  
             stopHour = 0;
         }
-        daqiqaYangilash();
+        startStopwatch()
     }, 1000);
 }
 
@@ -79,7 +77,7 @@ function resetStopwatch() {
     stopHour = 0
     stopMin = 0
     stopSec = 0;
-    daqiqaYangilash();
+    startStopwatch()
 }
 console.log(tabsLink);
 
@@ -102,6 +100,3 @@ stopwatch__btn.addEventListener('click', () => {
         tabsLink[0].classList.remove('active_clear');
     }
 });
-
-
-daqiqaYangilash();
