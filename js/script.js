@@ -13,19 +13,19 @@ function clock() {
     minArrow.style.transform = `rotate(${minute * 6}deg)`
     hourArrow.style.transform = `rotate(${hour * 30}deg)`
 
-    setTimeout(()=>{clock()},1000);
+    setTimeout(() => { clock() }, 1000);
 
-    hourNum.innerHTML = hour<10 ? `0${hour}` : hour
-    minNum.innerHTML = minute<10 ? `0${minute}` : minute
+    hourNum.innerHTML = hour < 10 ? `0${hour}` : hour
+    minNum.innerHTML = minute < 10 ? `0${minute}` : minute
 }
 clock()
 
 const tabsItem = document.querySelectorAll('.tabsItem'),
     tabsContentItem = document.querySelectorAll('.tabsContentItem')
 
-tabsItem.forEach((item,i)=>{
-    item.addEventListener('click',()=>{
-        tabsItem.forEach((item,j)=>{
+tabsItem.forEach((item, i) => {
+    item.addEventListener('click', () => {
+        tabsItem.forEach((item, j) => {
             item.classList.remove('active')
             tabsContentItem[j].classList.remove('active')
         })
@@ -35,68 +35,56 @@ tabsItem.forEach((item,i)=>{
 })
 
 const tabsLink = document.querySelectorAll('.tabsLink__span'),
-      stopwatch__hours = document.querySelector('.stopwatch__hours'),
-      stopwatch__minutes = document.querySelector('.stopwatch__minutes'),
-      stopwatch__seconds = document.querySelector('.stopwatch__seconds'),
-      stopwatch__btn = document.querySelector('.stopwatch__btn');
+    stopwatch__hours = document.querySelector('.stopwatch__hours'),
+    stopwatch__minutes = document.querySelector('.stopwatch__minutes'),
+    stopwatch__seconds = document.querySelector('.stopwatch__seconds'),
+    stopwatch__btn = document.querySelector('.stopwatch__btn');
 
 let stopMin = 0,
     stopSec = 0,
     stopHour = 0,
-    toxtat = false
+    toxtat = true; 
 
-
-
-function startStopwatch() {
-    stopwatch__hours.textContent   = stopHour   < 10 ? `0${stopHour}`   : stopHour;
-    stopwatch__minutes.textContent = stopMin    < 10 ? `0${stopMin}`    : stopMin;
-    stopwatch__seconds.textContent = stopSec    < 10 ? `0${stopSec}`    : stopSec;
-    interval = setInterval(() => {
-        console.log(stopwatch__seconds);
-        if (toxtat) return;
+function stopwatch() {
+    if (!toxtat) {
         stopSec++;
         if (stopSec > 59) {
             stopSec = 0;
             stopMin++;
-        }else if (stopMin > 59) {
+        }
+        if (stopMin > 59) {
             stopMin = 0;
             stopHour++;
-        }else if (stopHour > 23) {  
+        }
+        if (stopHour > 23) {
             stopHour = 0;
         }
-        startStopwatch()
-    }, 1000);
-}
+    }
 
-function stopStopwatch() {
-    toxtat = true
-}
+    stopwatch__hours.textContent   = stopHour < 10 ? `0${stopHour}` : stopHour;
+    stopwatch__minutes.textContent = stopMin  < 10 ? `0${stopMin}`  : stopMin;
+    stopwatch__seconds.textContent = stopSec  < 10 ? `0${stopSec}`  : stopSec;
 
-function resetStopwatch() {
-    toxtat = true
-    stopHour = 0
-    stopMin = 0
-    stopSec = 0;
-    startStopwatch()
+    setTimeout(stopwatch, 1000);
 }
-console.log(tabsLink);
 
 stopwatch__btn.addEventListener('click', () => {
     if (stopwatch__btn.textContent === "start") {
-        
         tabsLink[0].classList.add("active");
-        toxtat =false
-        startStopwatch();
+        toxtat = false;
         stopwatch__btn.textContent = "stop";
-        
     } else if (stopwatch__btn.textContent === "stop") {
         tabsLink[0].classList.add("active_clear");
-        stopStopwatch();
+        toxtat = true;
         stopwatch__btn.textContent = "reset";
     } else {
-        resetStopwatch();
+        toxtat = true;
+        stopHour = 0;
+        stopMin = 0;
+        stopSec = 0;
         stopwatch__btn.textContent = "start";
         tabsLink[0].classList.remove('active');
         tabsLink[0].classList.remove('active_clear');
     }
 });
+stopwatch();
